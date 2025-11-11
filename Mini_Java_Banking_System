@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Transaction_History {
+public class MIni_Java_Bank {
     static int balance = 0;
     static ArrayList<String> history = new ArrayList<>();
 
