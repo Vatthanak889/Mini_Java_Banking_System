@@ -1,0 +1,147 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Transaction_History {
+    static int balance = 0;
+    static ArrayList<String> history = new ArrayList<>();
+
+    static void deposit(int amount) {
+        balance += amount;
+        history.add("+ " + amount);
+    }
+
+    static void withdraw(int amount) {
+        balance -= amount;
+        history.add("- " + amount);
+    }
+
+    public static void main(String[] args) {
+        int choice = 0;
+
+        Scanner scanner = new Scanner(System.in);
+
+        int PIN = 7777;
+        int attempts = 3;
+        System.out.println("Welcome to Java Bank!");
+
+        while (attempts > 0) {
+            try {
+                System.out.print("Enter PIN: ");
+                int pin = scanner.nextInt();
+                if (PIN != pin) {
+                    attempts--;
+//                    if (attempts == 1) {
+//                        System.out.println("Wrong PIN (" + attempts + " attempt left)");
+//                    } else {
+//                        System.out.println("Wrong PIN (" + attempts + " attempts left)");
+//                    }
+                    System.out.println("Wrong PIN (" + attempts + " attempt" + (attempts > 1 ? "s" : "") + " left)");
+                } else {
+                    System.out.println("Correct PIN! Access granted ✅");
+                    System.out.println();
+                    break;
+                }
+
+                if (attempts == 0) {
+                    System.out.println("Account locked! Too many failed attempts \uD83D\uDEAB");
+                    return;
+                }
+            } catch (Exception e){
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.nextLine();
+//                continue;
+            }
+
+        }
+
+        System.out.println("Your Balance: $" + balance);
+
+        while (choice != 5) {
+            System.out.println("1. Deposit");
+            System.out.println("2. Withdraw");
+            System.out.println("3. Check Balance");
+            System.out.println("4. View Transaction History");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            try {
+                choice = scanner.nextInt();
+            } catch (Exception e) {
+                System.out.println("Invalid input. Numbers only.");
+                System.out.println();
+                scanner.nextLine();
+                continue;
+            }
+
+
+            switch (choice) {
+                case 1:
+                    System.out.println("You choose to deposit");
+                    try {
+                        System.out.print("Enter amount to deposit: $");
+                        int depositAmount = scanner.nextInt();
+                        if (depositAmount <= 0) {
+                            System.out.println("Sorry, Cannot deposit negative amount.");
+                        } else {
+                            deposit(depositAmount);
+                            System.out.println("Deposit successful.");
+                            System.out.println();
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Invalid input! Please enter a number.");
+                        scanner.nextLine();
+                    }
+                    break;
+
+                case 2:
+                    System.out.println("You choose to withdraw");
+                    try {
+                        System.out.print("Enter amount to withdraw: $");
+                        int withdrawAmount = scanner.nextInt();
+                        if (withdrawAmount <= 0) {
+                            System.out.println("Sorry, Cannot withdraw negative amount.");
+                        } else if (withdrawAmount > balance) {
+                            System.out.println("Insufficient funds.");
+                        } else {
+                            withdraw(withdrawAmount);
+                            System.out.println("Withdraw successful.");
+                            System.out.println();
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Invalid input! Please enter a number.");
+                        scanner.nextLine();
+                    }
+
+                    break;
+
+                case 3:
+                    System.out.println("You choose to check balance");
+                    System.out.print("Current balance: $" + balance);
+                    System.out.println("\n");
+                    break;
+
+                case 4:
+                    System.out.println("Transaction History: ");
+                    if (history.isEmpty()) {
+                        System.out.println("No Transaction yet!!!");
+                    } else {
+                        for (String entry : history) {
+                            System.out.println("$" + entry);
+                        }
+                    }
+
+                    System.out.println();
+                    break;
+                case 5:
+                    System.out.println("You choose to exit");
+                    System.out.print("Thank you for banking with us!");
+                    break;
+
+                default:
+                    System.out.println("Invalid option.");
+
+            }
+        }
+
+        scanner.close();
+    }
+}
